@@ -59,6 +59,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
         tabsManager = TabsManager.getManager(activity);
         tabsManager.setSavedTabsListener(() -> {
             if (DEBUG) {
@@ -72,9 +73,10 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
             }
         });
 
+
         youtubeRestrictedModeEnabledKey = getString(R.string.youtube_restricted_mode_enabled);
         previousYoutubeRestrictedModeEnabled =
-                PreferenceManager.getDefaultSharedPreferences(getContext())
+                PreferenceManager.getDefaultSharedPreferences(requireContext())
                         .getBoolean(youtubeRestrictedModeEnabledKey, false);
     }
 
@@ -151,7 +153,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
                     NavigationHelper.openSearchFragment(getFM(),
                             ServiceHelper.getSelectedServiceId(activity), "");
                 } catch (Exception e) {
-                    ErrorActivity.reportUiError((AppCompatActivity) getActivity(), e);
+                    ErrorActivity.reportUiError((AppCompatActivity) activity, e);
                 }
                 return true;
         }
@@ -164,7 +166,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
     private void setupTabs() {
         tabsList.clear();
-        tabsList.addAll(tabsManager.getTabs());
+        tabsList.addAll(tabsManager.getDefaultTabs());
 
         if (pagerAdapter == null || !pagerAdapter.sameTabs(tabsList)) {
             pagerAdapter = new SelectedTabsPagerAdapter(requireContext(),

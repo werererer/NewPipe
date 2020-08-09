@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -34,6 +34,7 @@ import org.schabi.newpipe.extractor.stream.AudioStream;
 import org.schabi.newpipe.extractor.stream.Stream;
 import org.schabi.newpipe.extractor.stream.StreamInfo;
 import org.schabi.newpipe.extractor.stream.VideoStream;
+import org.schabi.newpipe.fragments.DrawerFragment;
 import org.schabi.newpipe.fragments.MainFragment;
 import org.schabi.newpipe.fragments.detail.VideoDetailFragment;
 import org.schabi.newpipe.fragments.list.channel.ChannelFragment;
@@ -60,6 +61,7 @@ import java.util.ArrayList;
 @SuppressWarnings({"unused", "WeakerAccess"})
 public final class NavigationHelper {
     public static final String MAIN_FRAGMENT_TAG = "main_fragment_tag";
+    public static final String DRAWER_FRAGMENT_TAG = "drawer_fragment_tag";
     public static final String SEARCH_FRAGMENT_TAG = "search_fragment_tag";
 
     private NavigationHelper() { }
@@ -314,6 +316,7 @@ public final class NavigationHelper {
         ImageLoader.getInstance().clearMemoryCache();
 
         boolean popped = fragmentManager.popBackStackImmediate(MAIN_FRAGMENT_TAG, 0);
+
         if (!popped) {
             openMainFragment(fragmentManager);
         }
@@ -323,8 +326,11 @@ public final class NavigationHelper {
         InfoCache.getInstance().trimCache();
 
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        int size = fragmentManager.getBackStackEntryCount();
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_holder, new MainFragment())
+                //always open Drawer when opening MainFragment
+                .replace(R.id.fragment_holder, new DrawerFragment())
                 .addToBackStack(MAIN_FRAGMENT_TAG)
                 .commit();
     }
