@@ -28,8 +28,6 @@ public final class SectionsManager {
     }
 
     public void saveSections(final List<Section> sectionList) {
-        //TODO:delete line
-        Section section = sectionList.get(0);
         final String jsonToSave = SectionsJsonHelper.getJsonToSave(sectionList);
         sharedPreferences.edit().putString(savedSectionsKey, jsonToSave).apply();
     }
