@@ -240,11 +240,15 @@ public class ChooseSectionsFragment extends Fragment {
         for (Section.Type type : Section.Type.values()) {
             final Section section = type.getSection();
             switch (type) {
+                case BLANK:
+                    //dont show blank pages
+                    break;
                 case DOWNLOADS:
                     returnList.add(new AddSectionDialog.ChooseSectionListItem(
                             section.getSectionId(),
                             "Downloads",
                             section.getSectionIconRes(context)));
+                    break;
                 case KIOSK:
                     returnList.add(new AddSectionDialog.ChooseSectionListItem(
                             section.getSectionId(),
