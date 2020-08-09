@@ -36,6 +36,7 @@ import org.schabi.newpipe.report.ErrorActivity;
 import org.schabi.newpipe.settings.sections.Section;
 import org.schabi.newpipe.settings.sections.SectionsManager;
 import org.schabi.newpipe.util.Constants;
+import org.schabi.newpipe.util.KioskTranslator;
 import org.schabi.newpipe.util.NavigationHelper;
 import org.schabi.newpipe.util.PeertubeHelper;
 import org.schabi.newpipe.util.ServiceHelper;
@@ -43,7 +44,6 @@ import org.schabi.newpipe.util.ThemeHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class DrawerFragment extends MainFragment {
     MainActivity mainActivity;
@@ -59,17 +59,18 @@ public class DrawerFragment extends MainFragment {
     private NavigationView drawerItems;
 
     //TODO: sync those constants with the constants in the Section class
-    //must be same as in the Section class
-    static final int ITEM_ID_BLANK = 0;
-    static final int ITEM_ID_SETTINGS = 1;
-    static final int ITEM_ID_ABOUT = 2;
-    static final int ITEM_ID_BOOKMARKS = 3;
-    static final int ITEM_ID_FEED = 4;
-    static final int ITEM_ID_SUBSCRIPTIONS = 5;
-    static final int ITEM_ID_DOWNLOADS = 6;
-    static final int ITEM_ID_HISTORY = 7;
-    static final int ITEM_ID_DEFAULT_KIOSK = 8;
-    static final int ITEM_ID_KIOSK = 9;
+    //must be same as in the Section class#
+    //0, 1, 2, 3 are youtube, soundcloud, mediaccc, peertube
+    static final int ITEM_ID_BLANK = -1;
+    static final int ITEM_ID_SETTINGS = -2;
+    static final int ITEM_ID_ABOUT = -3;
+    static final int ITEM_ID_BOOKMARKS = -4;
+    static final int ITEM_ID_FEED = -5;
+    static final int ITEM_ID_SUBSCRIPTIONS = -6;
+    static final int ITEM_ID_DOWNLOADS = -7;
+    static final int ITEM_ID_HISTORY = -8;
+    static final int ITEM_ID_DEFAULT_KIOSK = -9;
+    static final int ITEM_ID_KIOSK = -10;
 
     private static final int ORDER = 0;
 
@@ -409,6 +410,15 @@ public class DrawerFragment extends MainFragment {
         drawerItems.getMenu().clear();
 
         int kioskCounter = 0;
+        ArrayList<String> kioskList = new ArrayList<>();
+        int serviceId = ServiceHelper.getSelectedServiceId(activity);
+        try {
+            StreamingService service = NewPipe.getService(serviceId);
+            kioskList.addAll(service.getKioskList().getAvailableKiosks());
+        } catch (ExtractionException e) {
+            e.printStackTrace();
+        }
+
         for (int i = 0; i < sectionList.size(); i++) {
             final Section section = sectionList.get(i);
 
@@ -418,22 +428,15 @@ public class DrawerFragment extends MainFragment {
                     break;
                 case ITEM_ID_DEFAULT_KIOSK:
                 case ITEM_ID_KIOSK:
-                    int serviceId = ServiceHelper.getSelectedServiceId(activity);
-                    try {
-                        StreamingService service = NewPipe.getService(serviceId);
-                        String sectionName = section.getSectionName(activity);
-
-                        Set<String> kioskList = service.getKioskList().getAvailableKiosks();
-                        //limits number of Kiosks
-                        if (kioskCounter < kioskList.size() && kioskList.contains(sectionName)) {
-                            drawerItems.getMenu().add(R.id.menu_tabs_group,
-                                    serviceId, ORDER,
-                                    section.getSectionName(activity))
-                                    .setIcon(section.getSectionIconRes(activity));
-                            kioskCounter++;
-                        }
-                    } catch (ExtractionException e) {
-                        e.printStackTrace();
+                    //limits number of Kiosks
+                    if (kioskCounter < kioskList.size()) {
+                        String sectionName = kioskList.get(kioskCounter);
+                        int iconID = KioskTranslator.getKioskIcon(sectionName, activity);
+                        drawerItems.getMenu().add(R.id.menu_tabs_group,
+                                serviceId, ORDER,
+                                sectionName)
+                                .setIcon(iconID);
+                        kioskCounter++;
                     }
                     break;
                 default:

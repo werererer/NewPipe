@@ -36,16 +36,16 @@ import java.util.Objects;
 public abstract class Section {
 
     //must be same as in the DrawerFragment class
-    static final int ITEM_ID_BLANK = 0;
-    static final int ITEM_ID_SETTINGS = 1;
-    static final int ITEM_ID_ABOUT = 2;
-    static final int ITEM_ID_BOOKMARKS = 3;
-    static final int ITEM_ID_FEED = 4;
-    static final int ITEM_ID_SUBSCRIPTIONS = 5;
-    static final int ITEM_ID_DOWNLOADS = 6;
-    static final int ITEM_ID_HISTORY = 7;
-    static final int ITEM_ID_DEFAULT_KIOSK = 8;
-    static final int ITEM_ID_KIOSK = 9;
+    static final int ITEM_ID_BLANK = -1;
+    static final int ITEM_ID_SETTINGS = -2;
+    static final int ITEM_ID_ABOUT = -3;
+    static final int ITEM_ID_BOOKMARKS = -4;
+    static final int ITEM_ID_FEED = -5;
+    static final int ITEM_ID_SUBSCRIPTIONS = -6;
+    static final int ITEM_ID_DOWNLOADS = -7;
+    static final int ITEM_ID_HISTORY = -8;
+    static final int ITEM_ID_DEFAULT_KIOSK = -9;
+    static final int ITEM_ID_KIOSK = -10;
 
     private static final String JSON_SECTION_ID_KEY = "section_id";
 
