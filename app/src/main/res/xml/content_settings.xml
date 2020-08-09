@@ -34,8 +34,8 @@
     <PreferenceScreen
         app:iconSpaceReserved="false"
         android:fragment="org.schabi.newpipe.settings.sections.ChooseSectionsFragment"
-        android:summary="What contents are shown on the panel"
-        android:key="@string/panel_content"
+        android:summary="@string/panel_content_summary"
+        android:key="@string/panel_content_key"
         android:title="@string/panel_content"/>
 
     <PreferenceScreen
