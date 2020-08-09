@@ -246,7 +246,7 @@ public class ChooseSectionsFragment extends Fragment {
                 case DOWNLOADS:
                     returnList.add(new AddSectionDialog.ChooseSectionListItem(
                             section.getSectionId(),
-                            "Downloads",
+                            getString(R.string.download),
                             section.getSectionIconRes(context)));
                     break;
                 case KIOSK:

@@ -241,7 +241,7 @@ public abstract class Section {
 
         @Override
         public String getSectionName(final Context context) {
-            return "Downloads";
+            return context.getString(R.string.download);
         }
 
         @Override

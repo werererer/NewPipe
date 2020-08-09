@@ -428,10 +428,12 @@ public class DrawerFragment extends MainFragment {
                     break;
                 case ITEM_ID_DEFAULT_KIOSK:
                 case ITEM_ID_KIOSK:
-                    //limits number of Kiosks
+                    //limits number of Kiosks to numbers of actual Kiosks
                     if (kioskCounter < kioskList.size()) {
-                        String sectionName = kioskList.get(kioskCounter);
-                        int iconID = KioskTranslator.getKioskIcon(sectionName, activity);
+                        String kioskId = kioskList.get(kioskCounter);
+                        String sectionName =
+                                KioskTranslator.getTranslatedKioskName(kioskId, activity);
+                        int iconID = KioskTranslator.getKioskIcon(kioskId, activity);
                         drawerItems.getMenu().add(R.id.menu_tabs_group,
                                 serviceId, ORDER,
                                 sectionName)
