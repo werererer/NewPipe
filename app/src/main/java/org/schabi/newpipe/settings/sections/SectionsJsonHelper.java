@@ -20,9 +20,12 @@ public final class SectionsJsonHelper {
     private static final List<Section> FALLBACK_INITIAL_SECTION_LIST = Collections.unmodifiableList(
             Arrays.asList(
                     Section.Type.DEFAULT_KIOSK.getSection(),
+                    Section.Type.DEFAULT_KIOSK.getSection(),
                     Section.Type.SUBSCRIPTIONS.getSection(),
-                    Section.Type.HISTORY.getSection(),
-                    Section.Type.BOOKMARKS.getSection()));
+                    Section.Type.FEED.getSection(),
+                    Section.Type.BOOKMARKS.getSection(),
+                    Section.Type.DOWNLOADS.getSection(),
+                    Section.Type.HISTORY.getSection()));
 
     private SectionsJsonHelper() {  }
     /**
