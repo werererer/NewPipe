@@ -53,7 +53,6 @@ public abstract class BaseFragment extends Fragment {
                     + "savedInstanceState = [" + savedInstanceState + "]");
         }
         super.onCreate(savedInstanceState);
-
         Icepick.restoreInstanceState(this, savedInstanceState);
         if (savedInstanceState != null) {
             onRestoreInstanceState(savedInstanceState);
