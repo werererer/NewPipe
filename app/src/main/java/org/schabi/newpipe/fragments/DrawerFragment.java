@@ -381,12 +381,33 @@ public class DrawerFragment extends MainFragment {
                 NavigationHelper.openStatisticFragment(activity.getSupportFragmentManager());
                 break;
             default:
-                int kioskId = ServiceHelper.getSelectedServiceId(activity);
-                String kioskName = item.getTitle().toString();
+                int kioskCounter = 0;
+                ArrayList<String> kioskList = new ArrayList<>();
+                int serviceId = ServiceHelper.getSelectedServiceId(activity);
+                try {
+                    StreamingService service = NewPipe.getService(serviceId);
+                    kioskList.addAll(service.getKioskList().getAvailableKiosks());
+                } catch (ExtractionException e) {
+                    e.printStackTrace();
+                }
+                String kioskId = getKioskIdsAsList().get(kioskCounter);
                 NavigationHelper.openKioskFragment(activity.getSupportFragmentManager(),
-                        kioskId, kioskName);
+                        serviceId, kioskId);
                 break;
         }
+    }
+
+    private List<String> getKioskIdsAsList() {
+        int serviceId = ServiceHelper.getSelectedServiceId(activity);
+        StreamingService service;
+        List<String> kioskList = new ArrayList<>();
+        try {
+            service = NewPipe.getService(serviceId);
+            kioskList.addAll(service.getKioskList().getAvailableKiosks());
+        } catch (ExtractionException e) {
+            e.printStackTrace();
+        }
+        return kioskList;
     }
 
     private void optionsAboutSelected(final MenuItem item) {
@@ -410,14 +431,8 @@ public class DrawerFragment extends MainFragment {
         drawerItems.getMenu().clear();
 
         int kioskCounter = 0;
-        ArrayList<String> kioskList = new ArrayList<>();
+        List<String> kioskList = getKioskIdsAsList();
         int serviceId = ServiceHelper.getSelectedServiceId(activity);
-        try {
-            StreamingService service = NewPipe.getService(serviceId);
-            kioskList.addAll(service.getKioskList().getAvailableKiosks());
-        } catch (ExtractionException e) {
-            e.printStackTrace();
-        }
 
         for (int i = 0; i < sectionList.size(); i++) {
             final Section section = sectionList.get(i);
