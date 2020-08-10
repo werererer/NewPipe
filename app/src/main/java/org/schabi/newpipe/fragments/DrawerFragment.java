@@ -71,6 +71,8 @@ public class DrawerFragment extends MainFragment {
     static final int ITEM_ID_HISTORY = -8;
     static final int ITEM_ID_DEFAULT_KIOSK = -9;
     static final int ITEM_ID_KIOSK = -10;
+    static final int ITEM_ID_CHANNEL = -11;
+    static final int ITEM_ID_PLAYLIST = -12;
 
     private static final int ORDER = 0;
 
@@ -362,6 +364,7 @@ public class DrawerFragment extends MainFragment {
     }
 
     private void sectionSelected(final MenuItem item) throws ExtractionException {
+        int serviceId = ServiceHelper.getSelectedServiceId(activity);
         switch (item.getItemId()) {
             case ITEM_ID_BLANK:
                 break;
@@ -380,19 +383,54 @@ public class DrawerFragment extends MainFragment {
             case ITEM_ID_HISTORY:
                 NavigationHelper.openStatisticFragment(activity.getSupportFragmentManager());
                 break;
+            case ITEM_ID_CHANNEL:
+                Section.ChannelSection section = null;
+
+                //find correct Section
+                for (int i = 0; i < sectionList.size(); i++) {
+                    if (sectionList.get(i) instanceof Section.ChannelSection) {
+                        Section.ChannelSection channelSection =
+                                (Section.ChannelSection) sectionList.get(i);
+                        if (channelSection.getChannelName() == item.getTitle()) {
+                            section = (Section.ChannelSection) sectionList.get(i);
+                        }
+                    }
+                }
+
+                NavigationHelper.openChannelFragment(
+                        activity.getSupportFragmentManager(),
+                        section.getChannelServiceId(),
+                        section.getChannelUrl(),
+                        section.getChannelName());
+                break;
+            case ITEM_ID_PLAYLIST:
+                Section.PlaylistSection section = null;
+                NavigationHelper.openPlaylistFragment();
+
+                //find correct Section
+                for (int i = 0; i < sectionList.size(); i++) {
+                    if (sectionList.get(i) instanceof Section.PlaylistSection) {
+                        Section.PlaylistSection channelSection =
+                                (Section.PlaylistSection) sectionList.get(i);
+                        if (channelSection.getPlaylistName() == item.getTitle()) {
+                            section = (Section.PlaylistSection) sectionList.get(i);
+                        }
+                    }
+                }
+
+                NavigationHelper.openPlaylistFragment(
+                        activity.getSupportFragmentManager(),
+                        section.getSectionId(),
+                        section.getPlaylistUrl(),
+                        section.getPlaylistName()
+                );
             default:
                 int kioskCounter = 0;
-                ArrayList<String> kioskList = new ArrayList<>();
-                int serviceId = ServiceHelper.getSelectedServiceId(activity);
-                try {
-                    StreamingService service = NewPipe.getService(serviceId);
-                    kioskList.addAll(service.getKioskList().getAvailableKiosks());
-                } catch (ExtractionException e) {
-                    e.printStackTrace();
-                }
                 String kioskId = getKioskIdsAsList().get(kioskCounter);
-                NavigationHelper.openKioskFragment(activity.getSupportFragmentManager(),
-                        serviceId, kioskId);
+                NavigationHelper.openKioskFragment(
+                        activity.getSupportFragmentManager(),
+                        serviceId,
+                        kioskId);
                 break;
         }
     }

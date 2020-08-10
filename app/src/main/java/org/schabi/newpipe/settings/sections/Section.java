@@ -46,6 +46,8 @@ public abstract class Section {
     static final int ITEM_ID_HISTORY = -8;
     static final int ITEM_ID_DEFAULT_KIOSK = -9;
     static final int ITEM_ID_KIOSK = -10;
+    static final int ITEM_ID_CHANNEL = -11;
+    static final int ITEM_ID_PLAYLIST = -12;
 
     private static final String JSON_SECTION_ID_KEY = "section_id";
 
@@ -405,7 +407,7 @@ public abstract class Section {
     }
 
     public static class ChannelSection extends Section {
-        public static final int ID = 2;
+        public static final int ID = ITEM_ID_CHANNEL;
         private static final String JSON_CHANNEL_SERVICE_ID_KEY = "channel_service_id";
         private static final String JSON_CHANNEL_URL_KEY = "channel_url";
         private static final String JSON_CHANNEL_NAME_KEY = "channel_name";
@@ -524,7 +526,7 @@ public abstract class Section {
     }
 
     public static class PlaylistSection extends Section {
-        public static final int ID = 8;
+        public static final int ID = ITEM_ID_PLAYLIST;
         private static final String JSON_PLAYLIST_SERVICE_ID_KEY = "playlist_service_id";
         private static final String JSON_PLAYLIST_URL_KEY = "playlist_url";
         private static final String JSON_PLAYLIST_NAME_KEY = "playlist_name";
