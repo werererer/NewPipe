@@ -384,54 +384,61 @@ public class DrawerFragment extends MainFragment {
                 NavigationHelper.openStatisticFragment(activity.getSupportFragmentManager());
                 break;
             case ITEM_ID_CHANNEL:
-                Section.ChannelSection section = null;
+                Section.ChannelSection channelSection = null;
 
                 //find correct Section
                 for (int i = 0; i < sectionList.size(); i++) {
                     if (sectionList.get(i) instanceof Section.ChannelSection) {
-                        Section.ChannelSection channelSection =
-                                (Section.ChannelSection) sectionList.get(i);
-                        if (channelSection.getChannelName() == item.getTitle()) {
-                            section = (Section.ChannelSection) sectionList.get(i);
+                        Section.ChannelSection sec = (Section.ChannelSection) sectionList.get(i);
+                        //channels never get Translated
+                        if (sec.getChannelName() == item.getTitle()) {
+                            channelSection = (Section.ChannelSection) sectionList.get(i);
+                            break;
                         }
                     }
                 }
 
                 NavigationHelper.openChannelFragment(
                         activity.getSupportFragmentManager(),
-                        section.getChannelServiceId(),
-                        section.getChannelUrl(),
-                        section.getChannelName());
+                        serviceId,
+                        channelSection.getChannelUrl(),
+                        channelSection.getChannelName());
                 break;
             case ITEM_ID_PLAYLIST:
-                Section.PlaylistSection section = null;
-                NavigationHelper.openPlaylistFragment();
+                Section.PlaylistSection playlistSection = null;
 
                 //find correct Section
                 for (int i = 0; i < sectionList.size(); i++) {
                     if (sectionList.get(i) instanceof Section.PlaylistSection) {
-                        Section.PlaylistSection channelSection =
-                                (Section.PlaylistSection) sectionList.get(i);
-                        if (channelSection.getPlaylistName() == item.getTitle()) {
-                            section = (Section.PlaylistSection) sectionList.get(i);
+                        Section.PlaylistSection sec = (Section.PlaylistSection) sectionList.get(i);
+                        if (sec.getPlaylistName() == item.getTitle()) {
+                            playlistSection = (Section.PlaylistSection) sectionList.get(i);
+                            break;
                         }
                     }
                 }
 
                 NavigationHelper.openPlaylistFragment(
                         activity.getSupportFragmentManager(),
-                        section.getSectionId(),
-                        section.getPlaylistUrl(),
-                        section.getPlaylistName()
-                );
-            default:
-                int kioskCounter = 0;
-                String kioskId = getKioskIdsAsList().get(kioskCounter);
-                NavigationHelper.openKioskFragment(
-                        activity.getSupportFragmentManager(),
                         serviceId,
-                        kioskId);
+                        playlistSection.getPlaylistUrl(),
+                        playlistSection.getPlaylistName()
+                );
                 break;
+            default:
+                List<String> kioskIdList = getKioskIdsAsList();
+
+                for (int i = 0; i < kioskIdList.size(); i++) {
+                    String kioskId = kioskIdList.get(i);
+                    String translation = KioskTranslator.getTranslatedKioskName(kioskId, activity);
+                    if (translation == item.getTitle()) {
+                        NavigationHelper.openKioskFragment(
+                                activity.getSupportFragmentManager(),
+                                serviceId,
+                                kioskIdList.get(i));
+                        break;
+                    }
+                }
         }
     }
 
