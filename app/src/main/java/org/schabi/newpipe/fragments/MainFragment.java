@@ -59,7 +59,6 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
     public void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-
         tabsManager = TabsManager.getManager(activity);
         tabsManager.setSavedTabsListener(() -> {
             if (DEBUG) {
@@ -73,10 +72,9 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
             }
         });
 
-
         youtubeRestrictedModeEnabledKey = getString(R.string.youtube_restricted_mode_enabled);
         previousYoutubeRestrictedModeEnabled =
-                PreferenceManager.getDefaultSharedPreferences(requireContext())
+                PreferenceManager.getDefaultSharedPreferences(getContext())
                         .getBoolean(youtubeRestrictedModeEnabledKey, false);
     }
 
