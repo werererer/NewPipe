@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -325,7 +325,6 @@ public final class NavigationHelper {
         InfoCache.getInstance().trimCache();
 
         fragmentManager.popBackStackImmediate(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        int size = fragmentManager.getBackStackEntryCount();
         defaultTransaction(fragmentManager)
                 .replace(R.id.fragment_holder, new MainFragment())
                 //always open Drawer when opening MainFragment
