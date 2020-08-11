@@ -32,7 +32,7 @@ public final class AddTabDialog {
         dialog.show();
     }
 
-    public static final class ChooseTabListItem {
+    static final class ChooseTabListItem {
         final int tabId;
         final String itemName;
         @DrawableRes
