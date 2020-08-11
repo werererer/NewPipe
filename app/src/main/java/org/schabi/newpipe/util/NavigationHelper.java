@@ -61,7 +61,6 @@ import java.util.ArrayList;
 @SuppressWarnings({"unused"})
 public final class NavigationHelper {
     public static final String MAIN_FRAGMENT_TAG = "main_fragment_tag";
-    public static final String DRAWER_FRAGMENT_TAG = "drawer_fragment_tag";
     public static final String SEARCH_FRAGMENT_TAG = "search_fragment_tag";
 
     private NavigationHelper() { }
