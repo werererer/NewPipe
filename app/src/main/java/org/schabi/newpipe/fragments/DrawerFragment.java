@@ -400,7 +400,7 @@ public class DrawerFragment extends MainFragment {
 
                 NavigationHelper.openChannelFragment(
                         activity.getSupportFragmentManager(),
-                        serviceId,
+                        channelSection.getChannelServiceId(),
                         channelSection.getChannelUrl(),
                         channelSection.getChannelName());
                 break;
@@ -420,7 +420,7 @@ public class DrawerFragment extends MainFragment {
 
                 NavigationHelper.openPlaylistFragment(
                         activity.getSupportFragmentManager(),
-                        serviceId,
+                        playlistSection.getPlaylistServiceId(),
                         playlistSection.getPlaylistUrl(),
                         playlistSection.getPlaylistName()
                 );
