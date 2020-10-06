@@ -17,7 +17,6 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 
 import org.acra.ACRA;
-import org.acra.BuildConfig;
 import org.acra.config.ACRAConfigurationException;
 import org.acra.config.CoreConfiguration;
 import org.acra.config.CoreConfigurationBuilder;

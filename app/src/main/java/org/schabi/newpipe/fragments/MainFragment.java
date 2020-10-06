@@ -74,7 +74,7 @@ public class MainFragment extends BaseFragment implements TabLayout.OnTabSelecte
 
         youtubeRestrictedModeEnabledKey = getString(R.string.youtube_restricted_mode_enabled);
         previousYoutubeRestrictedModeEnabled =
-                PreferenceManager.getDefaultSharedPreferences(getContext())
+                PreferenceManager.getDefaultSharedPreferences(requireContext())
                         .getBoolean(youtubeRestrictedModeEnabledKey, false);
     }
 
