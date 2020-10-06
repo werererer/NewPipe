@@ -144,7 +144,7 @@ public class ChooseSectionsFragment extends Fragment {
                 return;
             }
 
-            Dialog.OnClickListener actionListener = ((dialog, which) -> {
+            final Dialog.OnClickListener actionListener = ((dialog, which) -> {
                final AddSectionDialog.ChooseSectionListItem selected = availableSections[which];
                addSection(selected.sectionId);
             });
@@ -196,19 +196,19 @@ public class ChooseSectionsFragment extends Fragment {
 
         switch (type) {
             case KIOSK:
-                SelectKioskFragment selectKioskFragment = new SelectKioskFragment();
+                final SelectKioskFragment selectKioskFragment = new SelectKioskFragment();
                 selectKioskFragment.setOnSelectedListener((serviceId, kioskId, kioskName) ->
                         addSection(new Section.KioskSection(serviceId, kioskId)));
                 selectKioskFragment.show(getParentFragmentManager(), "select_kiosk");
                 return;
             case CHANNEL:
-                SelectChannelFragment selectChannelFragment = new SelectChannelFragment();
+                final SelectChannelFragment selectChannelFragment = new SelectChannelFragment();
                 selectChannelFragment.setOnSelectedListener((serviceId, url, name) ->
                         addSection(new Section.ChannelSection(serviceId, url, name)));
                 selectChannelFragment.show(getParentFragmentManager(), "select_channel");
                 return;
             case PLAYLIST:
-                SelectPlaylistFragment selectPlaylistFragment = new SelectPlaylistFragment();
+                final SelectPlaylistFragment selectPlaylistFragment = new SelectPlaylistFragment();
                 selectPlaylistFragment.setOnSelectedListener(
                         new SelectPlaylistFragment.OnSelectedListener() {
                             @Override
@@ -237,7 +237,7 @@ public class ChooseSectionsFragment extends Fragment {
     private AddSectionDialog.ChooseSectionListItem[] getAvailableSections(final Context context) {
         final ArrayList<AddSectionDialog.ChooseSectionListItem> returnList = new ArrayList<>();
 
-        for (Section.Type type : Section.Type.values()) {
+        for (final Section.Type type : Section.Type.values()) {
             final Section section = type.getSection();
             switch (type) {
                 case BLANK:
@@ -333,7 +333,7 @@ public class ChooseSectionsFragment extends Fragment {
 
             @Override
             public void onSwiped(final RecyclerView.ViewHolder viewHolder, final int swipeDir) {
-                int position = viewHolder.getAdapterPosition();
+                final int position = viewHolder.getAdapterPosition();
                 sectionList.remove(position);
                 selectedSectionsAdapter.notifyItemRemoved(position);
 

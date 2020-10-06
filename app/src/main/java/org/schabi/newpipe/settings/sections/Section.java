@@ -75,7 +75,7 @@ public abstract class Section {
 
     @Nullable
     public static Section.Type typeFrom(final int sectionId) {
-        for (Section.Type available : Section.Type.values()) {
+        for (final Section.Type available : Section.Type.values()) {
             if (available.getSectionId() == sectionId) {
                 return available;
             }
@@ -516,7 +516,7 @@ public abstract class Section {
             try {
                 final StreamingService service = NewPipe.getService(kioskServiceId);
                 kioskId = service.getKioskList().getDefaultKioskId();
-            } catch (ExtractionException e) {
+            } catch (final ExtractionException e) {
                 ErrorActivity.reportError(context, e, null, null,
                         ErrorActivity.ErrorInfo.make(UserAction.REQUESTED_KIOSK, "none",
                                 "Loading default kiosk from selected service", 0));

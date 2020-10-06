@@ -24,16 +24,15 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
-
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.View;
 import android.widget.FrameLayout;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -86,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (DeviceUtils.isTv(this)) {
-            View drawerPanel = findViewById(R.id.navigation);
+            final View drawerPanel = findViewById(R.id.navigation);
             if (drawerLayout.isDrawerOpen(drawerPanel)) {
                 drawerLayout.closeDrawers();
                 return;
@@ -137,7 +136,8 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onCreateOptionsMenu() called with: menu = [" + menu + "]");
         }
 
-        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.fragment_holder);
+        final Fragment fragment = getSupportFragmentManager().
+                findFragmentById(R.id.fragment_holder);
         if (!(fragment instanceof SearchFragment)) {
             findViewById(R.id.toolbar).findViewById(R.id.toolbar_search_container)
                     .setVisibility(View.GONE);
@@ -160,7 +160,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (fragment instanceof MainFragment) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            ActionBarDrawerToggle toggle = drawer.getToggle();
+            final ActionBarDrawerToggle toggle = drawer.getToggle();
             if (toggle != null) {
                 toggle.syncState();
                 toolbar.setNavigationOnClickListener(v -> drawerLayout
@@ -180,43 +180,12 @@ public class MainActivity extends AppCompatActivity {
             Log.d(TAG, "onCreate() called with: "
                     + "savedInstanceState = [" + savedInstanceState + "]");
         }
-        final ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                R.layout.instance_spinner_item, items);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        spinner.setAdapter(adapter);
-        spinner.setSelection(defaultSelect, false);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(final AdapterView<?> parent, final View view,
-                                       final int position, final long id) {
-                final PeertubeInstance newInstance = instances.get(position);
-                if (newInstance.getUrl().equals(PeertubeHelper.getCurrentInstance().getUrl())) {
-                    return;
-                }
-                PeertubeHelper.selectInstance(newInstance, getApplicationContext());
-                changeService(menuItem);
-                drawer.closeDrawers();
-                new Handler(Looper.getMainLooper()).postDelayed(() -> {
-                    getSupportFragmentManager().popBackStack(null,
-                            FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                    recreate();
-                }, 300);
-            }
 
-            @Override
-            public void onNothingSelected(final AdapterView<?> parent) {
-
-            }
-        });
-        menuItem.setActionView(spinner);
-    }
-
-    private void showTabs() throws ExtractionException {
-        serviceArrow.setImageResource(R.drawable.ic_arrow_drop_down_white_24dp);
-
-        //Tabs
-        final int currentServiceId = ServiceHelper.getSelectedServiceId(this);
-        final StreamingService service = NewPipe.getService(currentServiceId);
+        // enable TLS1.1/1.2 for kitkat devices, to fix download and play for mediaCCC sources
+        if (Build.VERSION.SDK_INT == Build.VERSION_CODES.KITKAT) {
+            TLSSocketFactoryCompat.setAsDefault();
+        }
+        assureCorrectAppLanguage(this);
 
         // order matters because of dependencies
         ThemeHelper.setTheme(this, ServiceHelper.getSelectedServiceId(this));
@@ -225,7 +194,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         if (getSupportFragmentManager() != null
-        && getSupportFragmentManager().getBackStackEntryCount() == 0) {
+                && getSupportFragmentManager().getBackStackEntryCount() == 0) {
             initFragments();
         }
     }

@@ -36,7 +36,7 @@ public final class SectionsManager {
         final String savedJson = sharedPreferences.getString(savedSectionsKey, null);
         try {
             return SectionsJsonHelper.getSectionsFromJson(savedJson);
-        } catch (SectionsJsonHelper.InvalidJsonException e) {
+        } catch (final SectionsJsonHelper.InvalidJsonException e) {
             Toast.makeText(context, R.string.saved_sections_invalid_json, Toast.LENGTH_SHORT)
                     .show();
             return getDefaultSections();

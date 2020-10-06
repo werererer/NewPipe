@@ -141,11 +141,11 @@ public class DrawerFragment extends MainFragment {
             headerServiceView.post(() -> headerServiceView.setSelected(true));
             toggleServiceButton.setContentDescription(
                     getString(R.string.drawer_header_description) + selectedServiceName);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             ErrorActivity.reportUiError(activity, e);
         }
 
-        SharedPreferences sharedPreferences = PreferenceManager.
+        final SharedPreferences sharedPreferences = PreferenceManager.
                 getDefaultSharedPreferences(activity);
 
         if (sharedPreferences.getBoolean(Constants.KEY_THEME_CHANGE, false)) {
@@ -207,14 +207,14 @@ public class DrawerFragment extends MainFragment {
                 if (servicesShown) {
                     toggleServices();
                 }
-                MainActivity activity = (MainActivity) drawerView.getContext();
+                final MainActivity activity = (MainActivity) drawerView.getContext();
                 if (lastService != ServiceHelper.getSelectedServiceId(activity)) {
                     new Handler(Looper.myLooper()).post(activity::recreate);
                 }
             }
         });
 
-        boolean isHistoryEnabled = PreferenceManager.getDefaultSharedPreferences(activity)
+        final boolean isHistoryEnabled = PreferenceManager.getDefaultSharedPreferences(activity)
                 .getBoolean(getString(R.string.enable_watch_history_key), true);
         if (drawerItems.getMenu().findItem(ITEM_ID_HISTORY) != null) {
             drawerItems.getMenu().findItem(ITEM_ID_HISTORY).setVisible(isHistoryEnabled);
@@ -225,8 +225,8 @@ public class DrawerFragment extends MainFragment {
     }
 
     private void setupDrawerHeader() {
-        NavigationView navigationView = activity.findViewById(R.id.navigation);
-        View hView = navigationView.getHeaderView(0);
+        final NavigationView navigationView = activity.findViewById(R.id.navigation);
+        final View hView = navigationView.getHeaderView(0);
 
         serviceArrow = hView.findViewById(R.id.drawer_arrow);
         headerServiceIcon = hView.findViewById(R.id.drawer_header_service_icon);
@@ -261,7 +261,7 @@ public class DrawerFragment extends MainFragment {
         } else {
             try {
                 showSections();
-            } catch (Exception e) {
+            } catch (final Exception e) {
                 ErrorActivity.reportUiError(activity, e);
             }
         }
@@ -270,11 +270,11 @@ public class DrawerFragment extends MainFragment {
     private void showServices() {
         serviceArrow.setImageResource(R.drawable.ic_arrow_drop_up_white_24dp);
 
-        for (StreamingService s : NewPipe.getServices()) {
+        for (final StreamingService s : NewPipe.getServices()) {
             final String title = s.getServiceInfo().getName()
                     + (ServiceHelper.isBeta(s) ? " (beta)" : "");
 
-            MenuItem menuItem = drawerItems.getMenu()
+            final MenuItem menuItem = drawerItems.getMenu()
                     .add(R.id.menu_services_group, s.getServiceId(), ORDER, title)
                     .setIcon(ServiceHelper.getIcon(s.getServiceId()));
 
@@ -288,20 +288,20 @@ public class DrawerFragment extends MainFragment {
     }
 
     private void enhancePeertubeMenu(final StreamingService s, final MenuItem menuItem) {
-        PeertubeInstance currentInstace = PeertubeHelper.getCurrentInstance();
+        final PeertubeInstance currentInstace = PeertubeHelper.getCurrentInstance();
         menuItem.setTitle(currentInstace.getName() + (ServiceHelper.isBeta(s) ? " (beta)" : ""));
-        Spinner spinner = (Spinner) LayoutInflater.from(activity)
+        final Spinner spinner = (Spinner) LayoutInflater.from(activity)
                 .inflate(R.layout.instance_spinner_layout, null);
-        List<PeertubeInstance> instances = PeertubeHelper.getInstanceList(activity);
-        List<String> items = new ArrayList<>();
+        final List<PeertubeInstance> instances = PeertubeHelper.getInstanceList(activity);
+        final List<String> items = new ArrayList<>();
         int defaultSelect = 0;
-        for (PeertubeInstance instance : instances) {
+        for (final PeertubeInstance instance : instances) {
             items.add(instance.getName());
             if (instance.getUrl().equals(currentInstace.getUrl())) {
                 defaultSelect = items.size() - 1;
             }
         }
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
+        final ArrayAdapter<String> adapter = new ArrayAdapter<>(activity,
                 R.layout.instance_spinner_item, items);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -310,7 +310,7 @@ public class DrawerFragment extends MainFragment {
             @Override
             public void onItemSelected(final AdapterView<?> parent, final View view,
                                        final int position, final long id) {
-                PeertubeInstance newInstance = instances.get(position);
+                final PeertubeInstance newInstance = instances.get(position);
                 if (newInstance.getUrl().equals(PeertubeHelper.getCurrentInstance().getUrl())) {
                     return;
                 }
@@ -348,7 +348,7 @@ public class DrawerFragment extends MainFragment {
             case R.id.menu_tabs_group:
                 try {
                     sectionSelected(item);
-                } catch (Exception e) {
+                } catch (final Exception e) {
                     ErrorActivity.reportUiError(activity, e);
                 }
                 break;
@@ -364,7 +364,7 @@ public class DrawerFragment extends MainFragment {
     }
 
     private void sectionSelected(final MenuItem item) throws ExtractionException {
-        int serviceId = ServiceHelper.getSelectedServiceId(activity);
+        final int serviceId = ServiceHelper.getSelectedServiceId(activity);
         switch (item.getItemId()) {
             case ITEM_ID_BLANK:
                 break;
@@ -389,7 +389,8 @@ public class DrawerFragment extends MainFragment {
                 //find correct Section
                 for (int i = 0; i < sectionList.size(); i++) {
                     if (sectionList.get(i) instanceof Section.ChannelSection) {
-                        Section.ChannelSection sec = (Section.ChannelSection) sectionList.get(i);
+                        final Section.ChannelSection sec =
+                                (Section.ChannelSection) sectionList.get(i);
                         //channels never get Translated
                         if (sec.getChannelName() == item.getTitle()) {
                             channelSection = (Section.ChannelSection) sectionList.get(i);
@@ -410,7 +411,8 @@ public class DrawerFragment extends MainFragment {
                 //find correct Section
                 for (int i = 0; i < sectionList.size(); i++) {
                     if (sectionList.get(i) instanceof Section.PlaylistSection) {
-                        Section.PlaylistSection sec = (Section.PlaylistSection) sectionList.get(i);
+                        final Section.PlaylistSection sec =
+                                (Section.PlaylistSection) sectionList.get(i);
                         if (sec.getPlaylistName() == item.getTitle()) {
                             playlistSection = (Section.PlaylistSection) sectionList.get(i);
                             break;
@@ -426,11 +428,12 @@ public class DrawerFragment extends MainFragment {
                 );
                 break;
             default:
-                List<String> kioskIdList = getKioskIdsAsList();
+                final List<String> kioskIdList = getKioskIdsAsList();
 
                 for (int i = 0; i < kioskIdList.size(); i++) {
-                    String kioskId = kioskIdList.get(i);
-                    String translation = KioskTranslator.getTranslatedKioskName(kioskId, activity);
+                    final String kioskId = kioskIdList.get(i);
+                    final String translation =
+                            KioskTranslator.getTranslatedKioskName(kioskId, activity);
                     if (translation == item.getTitle()) {
                         NavigationHelper.openKioskFragment(
                                 activity.getSupportFragmentManager(),
@@ -443,13 +446,13 @@ public class DrawerFragment extends MainFragment {
     }
 
     private List<String> getKioskIdsAsList() {
-        int serviceId = ServiceHelper.getSelectedServiceId(activity);
-        StreamingService service;
-        List<String> kioskList = new ArrayList<>();
+        final int serviceId = ServiceHelper.getSelectedServiceId(activity);
+        final StreamingService service;
+        final List<String> kioskList = new ArrayList<>();
         try {
             service = NewPipe.getService(serviceId);
             kioskList.addAll(service.getKioskList().getAvailableKiosks());
-        } catch (ExtractionException e) {
+        } catch (final ExtractionException e) {
             e.printStackTrace();
         }
         return kioskList;
@@ -476,8 +479,8 @@ public class DrawerFragment extends MainFragment {
         drawerItems.getMenu().clear();
 
         int kioskCounter = 0;
-        List<String> kioskList = getKioskIdsAsList();
-        int serviceId = ServiceHelper.getSelectedServiceId(activity);
+        final List<String> kioskList = getKioskIdsAsList();
+        final int serviceId = ServiceHelper.getSelectedServiceId(activity);
 
         for (int i = 0; i < sectionList.size(); i++) {
             final Section section = sectionList.get(i);
@@ -490,10 +493,10 @@ public class DrawerFragment extends MainFragment {
                 case ITEM_ID_KIOSK:
                     //limits number of Kiosks to numbers of actual Kiosks
                     if (kioskCounter < kioskList.size()) {
-                        String kioskId = kioskList.get(kioskCounter);
-                        String sectionName =
+                        final String kioskId = kioskList.get(kioskCounter);
+                        final String sectionName =
                                 KioskTranslator.getTranslatedKioskName(kioskId, activity);
-                        int iconID = KioskTranslator.getKioskIcon(kioskId, activity);
+                        final int iconID = KioskTranslator.getKioskIcon(kioskId, activity);
                         drawerItems.getMenu().add(R.id.menu_tabs_group,
                                 serviceId, ORDER,
                                 sectionName)
